@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+    container_name: fastapi_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Backend:/app
+    environment:
+      - TF_ENABLE_ONEDNN_OPTS=0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+
+  frontend:
+    build:
+      context: ./vite-project
+    container_name: react_frontend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./vite-project:/app
